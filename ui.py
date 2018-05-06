@@ -3,8 +3,9 @@ import RPi.GPIO as GPIO
 import time
 import os
 
-def write(filename):
-    file = open(filename,"w")
+def write():
+    print("WRITING")
+    file = open("program.py","w")
 
     file.write("import RPi.GPIO as GPIO\n")
     file.write("import time\n")
@@ -13,13 +14,20 @@ def write(filename):
     file.write("GPIO.output(12, GPIO.HIGH)\n")
     file.write("time.sleep(1)\n")
     file.write("GPIO.output(12, GPIO.LOW)\n")
+    file.write("GPIO.cleanup()")
     file.close()
+    print("WRITTEN")
 
-def run(filename):
-    os.system("python ./"+filename)
+def run():
+    print("RUNNING")
+    os.system("python ./program.py")
+    print("RAN")
 
 
 filename = "program.py"
-write(filename)
-run(filename)
-print("DONE")
+
+
+app = App(title = "Science Rendezvous May 2018")
+writeButton = PushButton(app, command = write, text = "Write File")
+runButton = PushButton(app, command = run, text = "Run Program")
+app.display()
