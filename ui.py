@@ -2,7 +2,6 @@ from guizero import App, PushButton, Text
 import RPi.GPIO as GPIO
 import time
 import os
-from program.py import *
 
 def write(filename):
     file = open(filename,"w")
@@ -11,14 +10,16 @@ def write(filename):
     file.write("import time\n")
     file.write("GPIO.setmode(GPIO.BOARD)\n")
     file.write("GPIO.setup(12, GPIO.OUT)\n")
-    file.write("def program():\n")
-    file.write("\tGPIO.output(12, GPIO.HIGH)\n")
-    file.write("\ttime.sleep(1)\n")
-    file.write("\tGPIO.output(12, GPIO.LOW)\n")
+    file.write("GPIO.output(12, GPIO.HIGH)\n")
+    file.write("time.sleep(1)\n")
+    file.write("GPIO.output(12, GPIO.LOW)\n")
     file.close()
+
+def run(filename):
+    os.system("python ./"+filename)
 
 
 filename = "program.py"
 write(filename)
-program()
+run(filename)
 print("DONE")
