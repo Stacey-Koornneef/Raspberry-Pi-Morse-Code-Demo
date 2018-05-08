@@ -10,10 +10,7 @@ def openFile():
     file.write("import time\n")
     file.write("GPIO.setmode(GPIO.BOARD)\n")
     file.write("GPIO.setup(12, GPIO.OUT)\n")
-    file.write("GPIO.output(12, GPIO.HIGH)\n")
-    file.write("time.sleep(1)\n")
-    file.write("GPIO.output(12, GPIO.LOW)\n")
-    print("WRITTEN")
+
 
 def run():
     file.write("GPIO.cleanup()\n")
@@ -22,12 +19,22 @@ def run():
     os.system("python ./program.py")
     print("RAN")
 
+def lightOn():
+    file.write("GPIO.output(12, GPIO.HIGH)\n")
 
+def lightOff():
+    file.write("GPIO.output(12, GPIO.LOW)\n")
+
+def lightSleep():
+    file.write("time.sleep(1)\n")
 
 
 app = App(title = "Science Rendezvous May 2018")
 file = open("program.py","w")
 #writeButton = PushButton(app, command = write, text = "Write File")
 runButton = PushButton(app, command = run, text = "Run Program")
+lightOnButton = PushButton(app, command = lightOn, text = "Turn Light On")
+lightOffButton = PushButton(app, command = lightOff, text = "Turn Light Off")
+lightSleepButton = PushButton(app, command = lightSleep, text = "Wait 1 Second")
 startButton = PushButton(app, command = openFile, text = "Start New Program")
 app.display()
