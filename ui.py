@@ -48,15 +48,16 @@ def lightOff():
         codeText.append("Turn Light Off\n")
 
 def lightSleep():
+    global txt
     if isLoop:
-        file.write("\ttime.sleep(1)\n")
-        codeText.append("\tWait\n")
+        file.write("\ttime.sleep(" + txt + ")\n")
+        codeText.append("\tWait " + txt + " seconds\n")
     elif isLoopTwo:
-        file.write("\t\ttime.sleep(1)\n")
-        codeText.append("\t\tWait\n")
+        file.write("\t\ttime.sleep(" + txt + ")\n")
+        codeText.append("\t\tWait " + txt + " seconds\n")
     else:
-        file.write("time.sleep(1)\n")
-        codeText.append("Wait\n")
+        file.write("time.sleep(" + txt + ")\n")
+        codeText.append("Wait " + txt + " seconds\n")
                         
 
 def looping():
@@ -93,27 +94,43 @@ def endLooping():
 def goLooping():
     forTextBox.visible = True
     submitButton.visible = True
+    global wantLoop
+    wantLoop = True
 
 def submitText():
     global txt
+    global wantTime
+    global wantLoop
     txt = forTextBox.get()
     if int(txt) > 5:
         txt = "5"
     submitButton.visible = False
     forTextBox.visible = False
-    looping()
+    if wantLoop:
+        wantLoop = False
+        looping()
+    if wantTime:
+        wantTime = False
+        lightSleep()
+
+def goSleep():
+    forTextBox.visible = True
+    submitButton.visible = True
+    global wantTime
+    wantTime = True
 
 app = App(title = "Science Rendezvous May 2018")
 file = open("program.py","w")
 
 txt = ""
-
+wantLoop = False
+wantTime = False
 #writeButton = PushButton(app, command = write, text = "Write File")
 
 startButton = PushButton(app, command = openFile, text = "Start Program")
 lightOnButton = PushButton(app, command = lightOn, text = "Turn Light On")
 lightOffButton = PushButton(app, command = lightOff, text = "Turn Light Off")
-lightSleepButton = PushButton(app, command = lightSleep, text = "Wait 1 Second")
+lightSleepButton = PushButton(app, command = goSleep, text = "Wait")
 startLoopButton = PushButton(app, command = goLooping, text = "Start For Loop")
 endLoopButton = PushButton(app, command = endLooping, text = "End For Loop")
 runButton = PushButton(app, command = run, text = "Run Program")
