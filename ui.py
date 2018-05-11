@@ -1,3 +1,8 @@
+'''
+Author: Stacey Koornneef
+Last Modified May 11, 2018
+'''
+
 from guizero import App, PushButton, Text, TextBox
 import RPi.GPIO as GPIO
 import time
@@ -6,25 +11,40 @@ import os
 isLoop = False
 isLoopTwo = False
 
+'''
+This function is run when the Start Program button is pressed.  It starts
+    the program that is being written by the user.  It opens the file
+    and writes the lines that import necessary libraries and sets up the
+    GPIO board on the Raspberry Pi
+'''
 def openFile():
     codeText.clear()
     print("WRITING")
-    #file = open("program.py", "w")
     file.write("import RPi.GPIO as GPIO\n")
     file.write("import time\n")
     file.write("GPIO.setmode(GPIO.BOARD)\n")
     file.write("GPIO.setup(12, GPIO.OUT)\n")
 
 
+'''
+This function is run when the Run button is pressed.  It writes the lines of
+    code that closes the GPIO connection, then closes the file itself.  It
+    then runs the program by connecting to the operating system.
+'''
 def run():
     codeText.clear()
-    codeText.append("Running Your Program!  Look at the Board!")
+    codeText.append("Finished")
     file.write("GPIO.cleanup()\n")
     file.close()
     print("RUNNING")
     os.system("python ./program.py")
     print("RAN")
 
+'''
+This function is run when the Turn Light On button is pressed.  It writes the
+    code to the program that will turn the LED on and it writes pseudo code
+    onto the ui for the user
+'''
 def lightOn():
     if isLoop:
         file.write("\tGPIO.output(12, GPIO.HIGH)\n")
@@ -36,6 +56,11 @@ def lightOn():
         file.write("GPIO.output(12, GPIO.HIGH)\n")
         codeText.append("Turn Light On\n")
 
+'''
+This function is run when the Turn Light Off button is pressed.  It writes the
+    code to the program that will turn the LED off and it writes pseudo code
+    onto the ui for the user
+'''
 def lightOff():
     if isLoop:
         file.write("\tGPIO.output(12, GPIO.LOW)\n")
@@ -47,6 +72,10 @@ def lightOff():
         file.write("GPIO.output(12, GPIO.LOW)\n")
         codeText.append("Turn Light Off\n")
 
+'''
+This function is run when the Wait button is pressed.  It writes code to the
+    program that will cause the program to pause between commands
+'''
 def lightSleep():
     global txt
     if isLoop:
@@ -59,19 +88,13 @@ def lightSleep():
         file.write("time.sleep(" + txt + ")\n")
         codeText.append("Wait " + txt + " seconds\n")
                         
-
+'''
+This function is run when the Start For Loop button is pressed.  It writes
+    code to the program that will allow it to loop a user-specified amount.
+    It also tells the rest of the program how many loops it's in
+'''
 def looping():
-##    window = Tk()
-##    User_input = Entry()
-##    User_input.pack()
-##    window.mainLoop()
-##    user_number = User_input.get()
-##    print(user_number)
-##    forTextBox.enabled = True
-##    time.sleep(10)
-##    x = forTextBox.get()
     global txt
-    print(txt)
     if isLoop:
         file.write("\tfor x in range(0," + txt + "):\n")
         global isLoopTwo
@@ -83,6 +106,10 @@ def looping():
         isLoop = True
         codeText.append("Do this " + txt + " times:\n")
 
+'''
+This function is run when the End For Loop button is pressed.  It tells the
+    rest of the program that the loop is done
+'''
 def endLooping():
     if isLoopTwo:
         global isLoopTwo
@@ -91,19 +118,29 @@ def endLooping():
         global isLoop
         isLoop = False
 
+'''
+This function is used to tell the submitText function that the submitted
+    number is for looping.  It also sets the text box and button
+    to visible for the user to see
+'''
 def goLooping():
     forTextBox.visible = True
     submitButton.visible = True
     global wantLoop
     wantLoop = True
 
+'''
+This function is run when either the Wait button or the Start For Loop button
+    is pressed.  It takes in a user input and then makes the inpout box and button invisible
+    again.  It then sends the input to either looping or sleeping
+'''
 def submitText():
     global txt
     global wantTime
     global wantLoop
     txt = forTextBox.get()
-    if int(txt) > 5:
-        txt = "5"
+    if int(txt) > 6:
+        txt = "6"
     submitButton.visible = False
     forTextBox.visible = False
     if wantLoop:
@@ -113,20 +150,31 @@ def submitText():
         wantTime = False
         lightSleep()
 
+'''
+This function is used to tell the submitText function that the submitted
+    number is for sleeping.  It also sets the text box and button
+    to visible for the user to see
+'''
 def goSleep():
     forTextBox.visible = True
     submitButton.visible = True
     global wantTime
     wantTime = True
 
-app = App(title = "Science Rendezvous May 2018")
+'''
+This creates the visualization
+'''
+app = App(title = "Visualizing Morse Code with an LED")
 file = open("program.py","w")
 
 txt = ""
 wantLoop = False
 wantTime = False
-#writeButton = PushButton(app, command = write, text = "Write File")
 
+
+'''
+These are all the buttons seen on the application
+'''
 startButton = PushButton(app, command = openFile, text = "Start Program")
 lightOnButton = PushButton(app, command = lightOn, text = "Turn Light On")
 lightOffButton = PushButton(app, command = lightOff, text = "Turn Light Off")
