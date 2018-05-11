@@ -1,0 +1,24 @@
+Saying “Hi” with Morse Code and a Light
+1. Click Start Program
+2. Click Start For Loop
+3. Enter 4 and click Submit
+4. Click Turn Light On
+5. Click Wait
+6. Enter 1 and click Submit
+7. Click Turn Light Off
+8. Click Wait
+9. Enter 1 and click Submit
+10. Click End For Loop
+11. Click Wait
+12. Enter 2 and click Submit
+13. Click Start For Loop
+14. Enter 2 and click Submit
+15. Click Turn Light On
+16. Click Wait
+17. Enter 1 and click Submit
+18. Click Turn Light Off
+19. Click Wait
+20. Enter 1 and click Submit
+21. Click End For Loop
+22. Click Run Program
+ 
